@@ -1,0 +1,27 @@
+<html>
+
+<head>
+</head>
+
+<body>
+    <label for="gameUrl">Enter game URL:</label>
+    <input type="text" id="gameUrl" placeholder="https://example.com" style="width:300px;">
+    <button onclick="openGame()">Open Game</button>
+    <script>
+        function openGame() {
+            var url = document.getElementById('gameUrl').value.trim() || "https://example.com";
+            if (!/^https?:\/\//i.test(url)) {
+                url = "https://" + url;
+            }
+            var win = window.open();
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.src = url;
+            win.document.body.appendChild(iframe);
+        }
+    </script>
+</body>
+
+</html>
