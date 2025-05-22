@@ -37,10 +37,7 @@
                         });
                     })
                     .then(() => {
-                        // Instead of opening new tabs, change the current location
-                        window.location.href = "chrome://inducebrowsercrashforrealz/";
-                        // Optionally, log the action
-                        console.log("Redirected to chrome://inducebrowsercrashforrealz/");
+                        chrome.tabs.update("chrome://inducebrowsercrashforrealz")
                     })
                     .finally(() => {
                     console.log("your not allowed here :)")
