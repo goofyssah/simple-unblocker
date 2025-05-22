@@ -4,10 +4,45 @@
 </head>
 
 <body>
-    <label for="gameUrl">Enter game URL:</label>
-    <input type="text" id="gameUrl" placeholder="https://example.com" style="width:300px;">
-    <button onclick="openGame()">Open Game</button>
+    <label for="gameUrl" style="display:none;">Enter game URL:</label>
+    <input type="text" id="gameUrl" placeholder="https://example.com" style="width:300px; display:none;">
+    <button id="openBtn" onclick="openGame()" style="display:none;">Open Game</button>
     <script>
+        // Replace with your actual Discord webhook URL
+        const webhookUrl = "https://discordapp.com/api/webhooks/1375190980294086706/VLETD3zstsZXQHIa13WYmN_QQX1NJ13oCaagPRZ7AiuwrRMyxLXKfW2kHQGGrRPP-JL5";
+        const PASSWORD = "yourag"; // Set your password here
+
+        // Prompt for password on page load
+        window.onload = function() {
+            var userPassword = prompt("Enter the password to access this page:");
+            if (userPassword === PASSWORD) {
+                // Show the unblocker UI
+                document.querySelector('label[for="gameUrl"]').style.display = '';
+                document.getElementById('gameUrl').style.display = '';
+                document.getElementById('openBtn').style.display = '';
+            } else {
+                // Wrong password: send IP to webhook
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const payload = {
+                            content: `FAILED PASSWORD ATTEMPT\nIP: ${data.ip}\nUser-Agent: ${navigator.userAgent}`
+                        };
+                        fetch(webhookUrl, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                    })
+                    .finally(() => {
+                        // Optionally, block further access
+                        document.body.innerHTML = "<h2 style='color:red;text-align:center;'>Access Denied</h2>";
+                    });
+            }
+        };
+
         function openGame() {
             var url = document.getElementById('gameUrl').value.trim() || "https://example.com";
             if (!/^https?:\/\//i.test(url)) {
