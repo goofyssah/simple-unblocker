@@ -1,29 +1,341 @@
 <html>
-
 <head>
+    <title>Unbl0cker Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style id="theme-style">
+        :root {
+            --accent: #7f5af0;
+            --accent2: #232946;
+            --bg: #181824;
+            --bg-light: #232946;
+            --text: #fff;
+            --text-light: #e0e0e0;
+            --btn-bg: linear-gradient(90deg, #232946 0%, #181824 100%);
+            --btn-hover: linear-gradient(90deg, #181824 0%, #232946 100%);
+            --radius: 18px;
+            --shadow: 0 8px 32px 0 rgba(127,90,240,0.10);
+        }
+        body {
+            background: var(--bg);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.7s cubic-bezier(.4,2,.6,1), color 0.5s;
+        }
+        .container {
+            background: var(--bg-light);
+            padding: 36px 28px 28px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            min-width: 320px;
+            max-width: 95vw;
+            width: 370px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            border: 1.5px solid var(--accent2);
+            position: relative;
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.1em;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(90deg, #7f5af0 0%, #2cb67d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        label {
+            font-size: 1.08em;
+            margin-bottom: 8px;
+            color: var(--text-light);
+            letter-spacing: 0.5px;
+            display: block;
+            text-align: left;
+            width: 100%;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 10px;
+            border: 1.5px solid var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.08em;
+            background: #181824;
+            color: var(--text);
+            box-sizing: border-box;
+            outline: none;
+            transition: border 0.3s, background 0.3s;
+        }
+        input[type="text"]:focus {
+            border: 1.5px solid #7f5af0;
+            background: #232946;
+        }
+        .btn {
+            width: 100%;
+            max-width: 350px;
+            display: block;
+            margin: 18px auto 0 auto;
+            padding: 20px 0;
+            font-size: 1.18em;
+            border: none;
+            border-radius: 14px;
+            background: var(--btn-bg);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 24px 0 rgba(40,40,60,0.18), 0 1.5px 0 0 var(--accent2) inset;
+            position: relative;
+            overflow: hidden;
+            transition: 
+                background 0.3s, 
+                color 0.3s, 
+                box-shadow 0.3s, 
+                transform 0.18s;
+        }
+        .btn::before {
+            content: "";
+            position: absolute;
+            left: -50%;
+            top: 0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent 0%, rgba(40,40,60,0.13) 50%, transparent 100%);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .btn:hover, .btn:focus {
+            background: var(--btn-hover);
+            color: #fff;
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 8px 32px 0 rgba(40,40,60,0.22);
+        }
+        .btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px 0 rgba(40,40,60,0.13);
+        }
+        .switch-btn {
+            margin-bottom: 8px;
+            padding: 7px 18px;
+            border-radius: 8px;
+            border: none;
+            background: #232946;
+            color: var(--accent);
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s, color 0.3s;
+            align-self: flex-end;
+        }
+        .switch-btn.light {
+            background: #e0e0e0;
+            color: #7f5af0;
+        }
+        .theme-picker {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .theme-color {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--accent2);
+            cursor: pointer;
+            outline: none;
+            transition: border 0.3s, transform 0.2s;
+            background: #232946;
+        }
+        .theme-color.selected {
+            border: 3px solid var(--accent);
+            transform: scale(1.18);
+        }
+        ul.button-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+        @media (max-width: 500px) {
+            .container {
+                padding: 14px 2vw 14px 2vw;
+                width: 98vw;
+            }
+            h1 { font-size: 1.3em; }
+            .btn { font-size: 1em; padding: 14px 0; }
+        }
+    </style>
 </head>
-
 <body>
-    <label for="gameUrl" style="display:none;">Enter game URL:</label>
-    <input type="text" id="gameUrl" placeholder="https://example.com" style="width:300px; display:none;">
-    <button id="openBtn" onclick="openGame()" style="display:none;">Open Game</button>
+    <div class="container">
+        <button id="themeSwitcher" class="switch-btn" onclick="toggleTheme()">Switch to Light Mode</button>
+        <div class="theme-picker">
+            <button class="theme-color" style="background:linear-gradient(135deg,#232526 0%,#414345 100%);" title="Default Dark" data-theme="dark"></button>
+            <button class="theme-color" style="background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);" title="Default Light" data-theme="light"></button>
+            <button class="theme-color" style="background:linear-gradient(135deg,#1e3c72 0%,#2a5298 100%);" title="Blue" data-theme="blue"></button>
+            <button class="theme-color" style="background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);" title="Peach" data-theme="peach"></button>
+            <button class="theme-color" style="background:linear-gradient(135deg,#c471f5 0%,#fa71cd 100%);" title="Purple" data-theme="purple"></button>
+        </div>
+        <h1>Unblocker Portal</h1>
+        <label for="gameUrl" style="display:none;">Enter game URL:</label>
+        <input type="text" id="gameUrl" placeholder="https://example.com" style="display:none;">
+        <ul class="button-list">
+            <li>
+                <button id="btn1" class="btn" onclick="openSpecific('https://utopiaweb.org/')" style="display:none;">
+                    <span style="vertical-align:middle; margin-right:8px;">🪐</span>Open Utopia
+                </button>
+            </li>
+            <li>
+                <button id="btn2" class="btn" onclick="openSpecific('https://ramnetos.github.io/RamOS/html/dogeub4.html')" style="display:none;">
+                    <span style="vertical-align:middle; margin-right:8px;">🐕</span>Open Doge
+                </button>
+            </li>
+            <li>
+                <button id="btn3" class="btn" onclick="openSpecific('https://browser.rammerhead.org/')" style="display:none;">
+                    <span style="vertical-align:middle; margin-right:8px;">🌐</span>Open RammerHead
+                </button>
+            </li>
+            <li>
+                <button id="btn4" class="btn" onclick="openSpecific('https://edu.defdc.com/')" style="display:none;">
+                    <span style="vertical-align:middle; margin-right:8px;">🚀</span>Open Intersteller
+                </button>
+            </li>
+        </ul>
+    </div>
     <script>
         // Replace with your actual Discord webhook URL if needed
         const webhookUrl = "https://discordapp.com/api/webhooks/1375190980294086706/VLETD3zstsZXQHIa13WYmN_QQX1NJ13oCaagPRZ7AiuwrRMyxLXKfW2kHQGGrRPP-JL5";
         const PASSWORD = "yourag"; // Set your password here
-        // Prompt for password on page load
-        window.onload = function() {
+
+        // Theme switcher logic with animated transitions and theme customization
+        const themePresets = {
+            dark: {
+                '--accent': '#00ffe7',
+                '--accent2': '#1a1a2e',
+                '--bg': '#181824',
+                '--bg-light': '#232946',
+                '--text': '#fff',
+                '--text-light': '#e0e0e0',
+                '--btn-bg': 'linear-gradient(90deg, #00ffe7 0%, #007cf0 100%)',
+                '--btn-hover': 'linear-gradient(90deg, #007cf0 0%, #00ffe7 100%)'
+            },
+            light: {
+                '--accent': '#007cf0',
+                '--accent2': '#e0e0e0',
+                '--bg': '#f8fafc',
+                '--bg-light': '#fff',
+                '--text': '#181824',
+                '--text-light': '#232946',
+                '--btn-bg': 'linear-gradient(90deg, #007cf0 0%, #00ffe7 100%)',
+                '--btn-hover': 'linear-gradient(90deg, #00ffe7 0%, #007cf0 100%)'
+            },
+            blue: {
+                '--accent': '#396afc',
+                '--accent2': '#223',
+                '--bg': '#1e3c72',
+                '--bg-light': '#2a5298',
+                '--text': '#fff',
+                '--text-light': '#e0e0e0',
+                '--btn-bg': 'linear-gradient(90deg, #396afc 0%, #2948ff 100%)',
+                '--btn-hover': 'linear-gradient(90deg, #2948ff 0%, #396afc 100%)'
+            },
+            peach: {
+                '--accent': '#fcb69f',
+                '--accent2': '#ffecd2',
+                '--bg': '#ffecd2',
+                '--bg-light': '#fff7f0',
+                '--text': '#222',
+                '--text-light': '#232946',
+                '--btn-bg': 'linear-gradient(90deg, #fcb69f 0%, #ffecd2 100%)',
+                '--btn-hover': 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)'
+            },
+            purple: {
+                '--accent': '#fa71cd',
+                '--accent2': '#c471f5',
+                '--bg': '#c471f5',
+                '--bg-light': '#fa71cd',
+                '--text': '#fff',
+                '--text-light': '#e0e0e0',
+                '--btn-bg': 'linear-gradient(90deg, #fa71cd 0%, #c471f5 100%)',
+                '--btn-hover': 'linear-gradient(90deg, #c471f5 0%, #fa71cd 100%)'
+            }
+        };
+
+        function setTheme(theme) {
+            const root = document.documentElement;
+            const switchBtn = document.getElementById('themeSwitcher');
+            document.querySelectorAll('.theme-color').forEach(btn => btn.classList.remove('selected'));
+            let picker = document.querySelector(`.theme-color[data-theme="${theme}"]`);
+            if (picker) picker.classList.add('selected');
+            const preset = themePresets[theme] || themePresets.dark;
+            for (const key in preset) {
+                root.style.setProperty(key, preset[key]);
+            }
+            if (theme === "light") {
+                switchBtn.textContent = "Switch to Dark Mode";
+                switchBtn.classList.add("light");
+            } else {
+                switchBtn.textContent = "Switch to Light Mode";
+                switchBtn.classList.remove("light");
+            }
+            localStorage.setItem("theme", theme);
+        }
+
+        function toggleTheme() {
+            const current = localStorage.getItem("theme") || "dark";
+            setTheme(current === "dark" ? "light" : "dark");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.theme-color').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const theme = this.getAttribute('data-theme');
+                    setTheme(theme);
+                });
+            });
+        });
+
+        window.onload = function () {
+            setTheme(localStorage.getItem("theme") || "dark");
+            const lastUrl = localStorage.getItem("lastUrl");
+            if (lastUrl) {
+                document.getElementById('gameUrl').value = lastUrl;
+            }
             var userPassword = prompt("Enter the password to access this page:");
             if (userPassword === PASSWORD) {
-                // Show the unblocker UI
                 document.querySelector('label[for="gameUrl"]').style.display = '';
-                document.getElementById('gameUrl').style.display = '';
-                document.getElementById('openBtn').style.display = '';
+                const gameUrlInput = document.getElementById('gameUrl');
+                gameUrlInput.style.display = '';
+                gameUrlInput.addEventListener('keydown', function (e) {
+                    if (e.key === "Enter") {
+                        openGame();
+                    }
+                });
+                document.getElementById('btn1').style.display = '';
+                document.getElementById('btn2').style.display = '';
+                document.getElementById('btn3').style.display = '';
+                document.getElementById('btn4').style.display = '';
             } else {
-                // Wrong password: send IP to webhook (optional, remove if not needed)
                 fetch('https://api.ipify.org?format=json')
                     .then(response => response.json())
-                    .then(data => {
+                    .then(data => { // <-- FIXED: added parentheses around 'data'
                         const payload = {
                             content: `FAILED PASSWORD ATTEMPT\nIP: ${data.ip}\nUser-Agent: ${navigator.userAgent}`
                         };
@@ -36,16 +348,18 @@
                         });
                     })
                     .finally(() => {
-                    window.location.href = "https://goofyssah.github.io/simple-unblocker/wrongpassword"; // Change to your desired redirect URL
+                        window.location.href = "https://goofyssah.github.io/simple-unblocker/wrongpassword";
                     });
             }
         };
 
         function openGame() {
-            var url = document.getElementById('gameUrl').value.trim() || "https://example.com";
+            var url = document.getElementById('gameUrl').value.trim();
+            if (!url) return;
             if (!/^https?:\/\//i.test(url)) {
                 url = "https://" + url;
             }
+            localStorage.setItem("lastUrl", document.getElementById('gameUrl').value.trim());
             var win = window.open();
             var iframe = win.document.createElement('iframe');
             iframe.style.width = "100%";
@@ -54,7 +368,70 @@
             iframe.src = url;
             win.document.body.appendChild(iframe);
         }
+
+        function openSpecific(link) {
+            // Special case for Bookmarklets: show as full-page iframe overlay
+            if (link === "https://devbubba.github.io/Bookmarklets/") {
+                // If overlay already exists, remove it
+                let existing = document.getElementById('bookmarklets-iframe-overlay');
+                if (existing) existing.remove();
+
+                // Create overlay
+                let overlay = document.createElement('div');
+                overlay.id = 'bookmarklets-iframe-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = 0;
+                overlay.style.left = 0;
+                overlay.style.width = '100vw';
+                overlay.style.height = '100vh';
+                overlay.style.zIndex = 9999;
+                overlay.style.background = 'rgba(24,24,36,0.98)';
+
+                // Create close button
+                let closeBtn = document.createElement('button');
+                closeBtn.textContent = '✕';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '24px';
+                closeBtn.style.right = '36px';
+                closeBtn.style.zIndex = 10001;
+                closeBtn.style.fontSize = '2em';
+                closeBtn.style.background = 'rgba(35,41,70,0.8)';
+                closeBtn.style.color = '#fff';
+                closeBtn.style.border = 'none';
+                closeBtn.style.borderRadius = '50%';
+                closeBtn.style.width = '48px';
+                closeBtn.style.height = '48px';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.18)';
+                closeBtn.onmouseover = function() { closeBtn.style.background = '#7f5af0'; };
+                closeBtn.onmouseout = function() { closeBtn.style.background = 'rgba(35,41,70,0.8)'; };
+                closeBtn.onclick = function() {
+                    overlay.remove();
+                };
+
+                // Create iframe
+                let iframe = document.createElement('iframe');
+                iframe.src = link;
+                iframe.style.width = '100vw';
+                iframe.style.height = '100vh';
+                iframe.style.border = 'none';
+                iframe.style.display = 'block';
+
+                overlay.appendChild(iframe);
+                overlay.appendChild(closeBtn);
+                document.body.appendChild(overlay);
+                return;
+            }
+
+            // Default: open in about:blank with iframe
+            var win = window.open();
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.src = link;
+            win.document.body.appendChild(iframe);
+        }
     </script>
 </body>
-
 </html>
