@@ -3,6 +3,8 @@
     <title>Unbl0cker Portal</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Docs favicon -->
+    <link rel="icon" type="image/png" href="https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png">
     <style id="theme-style">
         :root {
             --accent: #7f5af0;
@@ -194,10 +196,16 @@
             <button class="theme-color" style="background:linear-gradient(135deg,#c471f5 0%,#fa71cd 100%);" title="Purple" data-theme="purple"></button>
         </div>
         <h1>Unblocker Portal</h1>
+        <p style="color:#ffb86c; background:rgba(127,90,240,0.08); border-radius:8px; padding:10px 16px; margin-bottom:10px; font-size:1em; text-align:center;">
+            <b>Warning:</b> Some sites may not work directly here. If a site doesn't load, try using one of the unblockers below!
+        </p>
         <label for="gameUrl" style="display:none;">Enter game URL:</label>
         <input type="text" id="gameUrl" placeholder="https://example.com" style="display:none;">
         <ul class="button-list">
             <li>
+                <p style="color:#ffb86c; background:rgba(127,90,240,0.08); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:0.98em; text-align:center;">
+                    <b>Note:</b> Utopia may have invisible ads that redirect you. If you click and it opens a tab, just close the new tab and go back.
+                </p>
                 <button id="btn1" class="btn" onclick="openSpecific('https://utopiaweb.org/')" style="display:none;">
                     <span style="vertical-align:middle; margin-right:8px;">🪐</span>Open Utopia
                 </button>
@@ -217,7 +225,29 @@
                     <span style="vertical-align:middle; margin-right:8px;">🚀</span>Open Intersteller
                 </button>
             </li>
+            <li>
+                <button id="btn5" class="btn" onclick="showBookmarkletsInfo()" style="display:none;">
+                    <span style="vertical-align:middle; margin-right:8px;">🔖</span>Bookmarklets
+                </button>
+            </li>
         </ul>
+        <div class="custom-links-section" style="margin-top:32px; width:100%;">
+            <h2 style="font-size:1.2em; color:var(--accent); margin-bottom:10px; text-align:center;">Custom Links</h2>
+            <p style="color:#7f5af0; background:rgba(127,90,240,0.08); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:0.98em; text-align:center;">
+                <b>Tip:</b> For the best experience, click the <b>three dots</b> in your browser, then click the <b>fullscreen button</b> next to the zoom controls!<br>
+                <b>Note:</b> You may need to go fullscreen <u>before</u> opening a link to make sure the game or site displays in the correct proportions.
+            </p>
+            <ul id="customLinksList" style="
+                list-style:none;
+                padding:0;
+                margin:0;
+                display:flex;
+                flex-wrap:wrap;
+                gap:10px;
+                justify-content:center;
+                align-items:center;
+            "></ul>
+        </div>
     </div>
     <script>
         // Replace with your actual Discord webhook URL if needed
@@ -311,46 +341,37 @@
                 });
             });
         });
-
+        // Password prompt and UI show logic (keep as you have)
         window.onload = function () {
-            setTheme(localStorage.getItem("theme") || "dark");
-            const lastUrl = localStorage.getItem("lastUrl");
-            if (lastUrl) {
-                document.getElementById('gameUrl').value = lastUrl;
-            }
+            const PASSWORD = "yourag"; // Change to your password
             var userPassword = prompt("Enter the password to access this page:");
-            if (userPassword === PASSWORD) {
-                document.querySelector('label[for="gameUrl"]').style.display = '';
-                const gameUrlInput = document.getElementById('gameUrl');
-                gameUrlInput.style.display = '';
-                gameUrlInput.addEventListener('keydown', function (e) {
-                    if (e.key === "Enter") {
-                        openGame();
-                    }
-                });
-                document.getElementById('btn1').style.display = '';
-                document.getElementById('btn2').style.display = '';
-                document.getElementById('btn3').style.display = '';
-                document.getElementById('btn4').style.display = '';
-            } else {
-                fetch('https://api.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => { // <-- FIXED: added parentheses around 'data'
-                        const payload = {
-                            content: `FAILED PASSWORD ATTEMPT\nIP: ${data.ip}\nUser-Agent: ${navigator.userAgent}`
-                        };
-                        return fetch(webhookUrl, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(payload)
-                        });
-                    })
-                    .finally(() => {
-                        window.location.href = "https://goofyssah.github.io/simple-unblocker/wrongpassword";
-                    });
+            if (userPassword !== PASSWORD) {
+                alert("Incorrect password.");
+                // Just kick them off the page (blank out the body)
+                document.body.innerHTML = "<h2 style='color:#ff4f4f;text-align:center;margin-top:60px;'>Access Denied</h2>";
+                return;
             }
+
+            // Show the unblocker UI
+            document.querySelector('label[for="gameUrl"]').style.display = '';
+            const gameUrlInput = document.getElementById('gameUrl');
+            gameUrlInput.style.display = '';
+            gameUrlInput.addEventListener('keydown', function(e) {
+                if (e.key === "Enter") {
+                    openGame();
+                }
+            });
+            document.getElementById('btn1').style.display = '';
+            document.getElementById('btn2').style.display = '';
+            document.getElementById('btn3').style.display = '';
+            document.getElementById('btn4').style.display = '';
+            document.getElementById('btn5').style.display = '';
+
+            // --- ORIGINAL CLOAKING METHOD ---
+            var url = "/student?auth=" + Math.random().toString(36).substring(2, 10);
+            var title = "Google Drive";
+            document.title = title;
+            history.pushState({}, title, url);
         };
 
         function openGame() {
@@ -370,56 +391,11 @@
         }
 
         function openSpecific(link) {
-            // Special case for Bookmarklets: show as full-page iframe overlay
-            if (link === "https://devbubba.github.io/Bookmarklets/") {
-                // If overlay already exists, remove it
-                let existing = document.getElementById('bookmarklets-iframe-overlay');
-                if (existing) existing.remove();
-
-                // Create overlay
-                let overlay = document.createElement('div');
-                overlay.id = 'bookmarklets-iframe-overlay';
-                overlay.style.position = 'fixed';
-                overlay.style.top = 0;
-                overlay.style.left = 0;
-                overlay.style.width = '100vw';
-                overlay.style.height = '100vh';
-                overlay.style.zIndex = 9999;
-                overlay.style.background = 'rgba(24,24,36,0.98)';
-
-                // Create close button
-                let closeBtn = document.createElement('button');
-                closeBtn.textContent = '✕';
-                closeBtn.style.position = 'absolute';
-                closeBtn.style.top = '24px';
-                closeBtn.style.right = '36px';
-                closeBtn.style.zIndex = 10001;
-                closeBtn.style.fontSize = '2em';
-                closeBtn.style.background = 'rgba(35,41,70,0.8)';
-                closeBtn.style.color = '#fff';
-                closeBtn.style.border = 'none';
-                closeBtn.style.borderRadius = '50%';
-                closeBtn.style.width = '48px';
-                closeBtn.style.height = '48px';
-                closeBtn.style.cursor = 'pointer';
-                closeBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.18)';
-                closeBtn.onmouseover = function() { closeBtn.style.background = '#7f5af0'; };
-                closeBtn.onmouseout = function() { closeBtn.style.background = 'rgba(35,41,70,0.8)'; };
-                closeBtn.onclick = function() {
-                    overlay.remove();
-                };
-
-                // Create iframe
-                let iframe = document.createElement('iframe');
-                iframe.src = link;
-                iframe.style.width = '100vw';
-                iframe.style.height = '100vh';
-                iframe.style.border = 'none';
-                iframe.style.display = 'block';
-
-                overlay.appendChild(iframe);
-                overlay.appendChild(closeBtn);
-                document.body.appendChild(overlay);
+            // Special case for Bookmarklets: open with Doge Unblocker as a proxy in the main window
+            if (link === "https://github.com/DevBubba/Bookmarklets") {
+                let dogeProxy = "https://ramnetos.github.io/RamOS/html/dogeub4.html?url=";
+                let proxiedUrl = dogeProxy + encodeURIComponent(link);
+                window.location.href = proxiedUrl;
                 return;
             }
 
@@ -432,6 +408,143 @@
             iframe.src = link;
             win.document.body.appendChild(iframe);
         }
+
+        function showBookmarkletsInfo() {
+            // Create overlay
+            let overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = 0;
+            overlay.style.left = 0;
+            overlay.style.width = '100vw';
+            overlay.style.height = '100vh';
+            overlay.style.background = 'rgba(24,24,36,0.96)';
+            overlay.style.zIndex = 9999;
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+
+            // Create modal box
+            let modal = document.createElement('div');
+            modal.style.background = '#232946';
+            modal.style.color = '#fff';
+            modal.style.padding = '32px 28px';
+            modal.style.borderRadius = '16px';
+            modal.style.boxShadow = '0 8px 32px 0 rgba(127,90,240,0.15)';
+            modal.style.maxWidth = '95vw';
+            modal.style.width = '370px';
+            modal.style.textAlign = 'center';
+            modal.innerHTML = `
+                <h2 style="margin-top:0;">How to Use Bookmarklets</h2>
+                <p>
+                    To use the Bookmarklets site, you need to open it in an <b>about:blank</b> popup.<br><br>
+                    <b>1.</b> Click <a href="#" id="openBookmarklets" style="color:#7f5af0;text-decoration:underline;">here</a> to open <b>bookmarklets.jake.eu</b> in a popup.<br>
+                    <b>2.</b> When you want a bookmarklet, <b>double-click</b> the code to copy the link.<br>
+                    <b>3.</b> Paste the copied link into Doge Unblocker to use it.<br><br>
+                    <i>This is needed because bookmarklets often require special handling and may not work directly in a proxy.</i>
+                </p>
+                <button id="closeBookmarkletsInfo" style="margin-top:18px;padding:8px 22px;border-radius:8px;border:none;background:#7f5af0;color:#fff;font-size:1em;cursor:pointer;">Close</button>
+            `;
+
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+
+            // Close button
+            document.getElementById('closeBookmarkletsInfo').onclick = function() {
+                overlay.remove();
+            };
+
+            // Open about:blank popup with bookmarklets site
+            document.getElementById('openBookmarklets').onclick = function(e) {
+                e.preventDefault();
+                var win = window.open();
+                var iframe = win.document.createElement('iframe');
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.style.border = "none";
+                iframe.src = "http://bookmarklets.jake.eu/";
+                win.document.body.appendChild(iframe);
+            };
+        }
+
+        // Paste your links here as objects with title and url
+        const customLinks = [
+            { title: "2048", url: "https://play2048.co/" },
+            { title: "Cookie Clicker", url: "https://orteil.dashnet.org/cookieclicker/" },
+            { title: "Slither.io", url: "https://slither.io/" },
+            { title: "Agar.io", url: "https://agar.io/" },
+            { title: "Tetris", url: "https://tetris.com/play-tetris" },
+            { title: "Plane", url: "https://assets.3kh0.net/papery-planes/index.html" },
+            { title: "MultiTask", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=multitask.swf" },
+            { title: "Good Slope", url: "https://utopiaweb.org/gams/gfiles/html5/slope/" },
+            { title: "Five Nights At Wintons", url: "https://g.deev.is/fnaw/" },
+            { title: "Flappy Bird", url: "https://flappybird.io/" },
+            { title: "Blooket Bot(may not work)", url: "https://blooketbot.glitch.me/" },
+            { title: "Minecraft", url: "https://mcraft.fun/" },
+            { title: "Happy Wheels", url: "https://files.crazygames.com/ruffle/happywheels.html" },
+            { title: "Duck Life 4", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=ducklife4.swf" },
+            { title: "Learn2Fly3", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=learn2fly3.swf"},
+             { title: "Monkey Mart", url: "https://monkeymartgame.org/"},
+        ];  
+
+        function openInAboutBlank(url) {
+            var win = window.open();
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.src = url;
+            win.document.body.style.margin = "0";
+            win.document.body.appendChild(iframe);
+        }
+
+        function renderCustomLinks() {
+            const list = document.getElementById('customLinksList');
+            list.innerHTML = '';
+            customLinks.forEach(linkObj => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.justifyContent = 'center';
+                li.style.alignItems = 'center';
+                li.style.margin = '0';
+                li.style.padding = '0';
+
+                // Bubble button
+                const nameBtn = document.createElement('button');
+                nameBtn.type = 'button';
+                nameBtn.textContent = linkObj.title;
+                nameBtn.style.background = 'var(--btn-bg)';
+                nameBtn.style.color = '#fff';
+                nameBtn.style.fontWeight = 'bold';
+                nameBtn.style.fontSize = '0.98em';
+                nameBtn.style.border = 'none';
+                nameBtn.style.borderRadius = '999px';
+                nameBtn.style.padding = '7px 18px';
+                nameBtn.style.margin = '0';
+                nameBtn.style.cursor = 'pointer';
+                nameBtn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                nameBtn.style.transition = 'background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.18s';
+                nameBtn.onmouseover = function() {
+                    nameBtn.style.background = 'var(--btn-hover)';
+                    nameBtn.style.transform = 'translateY(-1px) scale(1.03)';
+                    nameBtn.style.boxShadow = '0 4px 16px 0 rgba(40,40,60,0.16)';
+                };
+                nameBtn.onmouseout = function() {
+                    nameBtn.style.background = 'var(--btn-bg)';
+                    nameBtn.style.transform = 'none';
+                    nameBtn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                };
+                nameBtn.onclick = function(e) {
+                    e.preventDefault();
+                    openInAboutBlank(linkObj.url);
+                };
+
+                li.appendChild(nameBtn);
+                list.appendChild(li);
+            });
+        }
+
+        // Render on page load
+        renderCustomLinks();
     </script>
 </body>
 </html>
