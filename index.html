@@ -30,6 +30,21 @@
             justify-content: center;
             transition: background 0.7s cubic-bezier(.4,2,.6,1), color 0.5s;
         }
+        body::before {
+            content: "";
+            position: fixed;
+            z-index: 0;
+            left: 0; top: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            background: radial-gradient(circle at 20% 30%, #7f5af033 0%, transparent 60%),
+                        radial-gradient(circle at 80% 70%, #2cb67d33 0%, transparent 60%),
+                        linear-gradient(120deg, #232946 0%, #181824 100%);
+            animation: bgmove 12s linear infinite alternate;
+        }
+        @keyframes bgmove {
+            0% { background-position: 20% 30%, 80% 70%, 0 0; }
+            100% { background-position: 30% 40%, 70% 60%, 100% 100%; }
+        }
         .container {
             background: var(--bg-light);
             padding: 36px 28px 28px 28px;
@@ -231,6 +246,82 @@
                 </button>
             </li>
         </ul>
+        <div style="width:100%; text-align:center; margin-bottom:14px;">
+            <button id="randomGameBtn" class="btn" style="max-width:220px; padding:10px 0; font-size:1em;">🎲 Random Game</button>
+            <button id="changelogBtn" class="btn" style="max-width:180px; padding:10px 0; font-size:1em;">Changelog</button>
+            <button id="instructionsBtn" class="btn" style="max-width:180px; padding:10px 0; font-size:1em;">Instructions</button>
+            <button id="faqBtn" class="btn" style="max-width:180px; padding:10px 0; font-size:1em;">FAQ / Help</button>
+        </div>
+        <div style="width:100%; margin-bottom:10px;">
+            <h3 style="font-size:1.08em; color:var(--accent); margin-bottom:4px;">Pinned Links</h3>
+            <ul id="pinnedList" style="list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;"></ul>
+        </div>
+        <div style="width:100%; margin-bottom:10px;">
+            <h3 style="font-size:1.08em; color:var(--accent); margin-bottom:4px;">Favorites</h3>
+            <ul id="favoritesList" style="list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;"></ul>
+            <h3 style="font-size:1.08em; color:var(--accent); margin:10px 0 4px 0;">Recently Used</h3>
+            <ul id="recentList" style="list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;"></ul>
+        </div>
+        <!-- Changelog Modal -->
+        <!-- Update your changelog modal to group the last 3 versions into v2.2 -->
+<div id="changelogModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(24,24,36,0.96); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#232946; color:#fff; padding:32px 28px; border-radius:16px; box-shadow:0 8px 32px 0 rgba(127,90,240,0.15); max-width:95vw; width:370px; text-align:left;">
+        <h2 style="margin-top:0; text-align:center;">Changelog</h2>
+        <div style="line-height:1.4; font-size:1em; max-height:320px; overflow-y:auto; width:100%; margin-bottom:18px;">
+            <b>v1.5</b> - Fixed unblocker buttons (Utopia, Doge, RammerHead, Intersteller, Bookmarklets) so they now work!<br>
+            <b>v1.4</b> - Added search bar to filter games and tools, FAQ / Help modal, pinned links section, built-in mini-game (Snake), and more!<br>
+            <b>v1.3</b> - Added link icons, descriptions, double-click open, alphabetical sorting, changelog, and 5 easter eggs!<br>
+            <b>v1.2</b> - Animated backgrounds, link status indicators, custom themes, random game button.<br>
+            <b>v1.1</b> - Favorites, recently used, instructions modal, and more.<br>
+            <b>v1.0</b> - Added custom unblocker and other unblocking links.<br>
+        </div>
+        <button onclick="document.getElementById('changelogModal').style.display='none'" class="btn" style="max-width:120px; margin-top:0; display:block; margin-left:auto; margin-right:auto;">Close</button>
+    </div>
+</div>
+        <!-- Instructions Modal -->
+        <div id="instructionsModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(24,24,36,0.96); z-index:9999; align-items:center; justify-content:center;">
+            <div style="background:#232946; color:#fff; padding:32px 28px; border-radius:16px; box-shadow:0 8px 32px 0 rgba(127,90,240,0.15); max-width:95vw; width:370px; text-align:left; display:flex; flex-direction:column; align-items:center;">
+                <h2 style="margin-top:0; text-align:center;">Instructions</h2>
+                <div style="line-height:1.4; font-size:1em; max-height:320px; overflow-y:auto; width:100%; margin-bottom:18px;">
+                    <b>1. Enter the Password:</b> When you open the portal, you’ll be prompted for a password. Enter the correct password to access all features.<br>
+                    <b>2. Using Unblocker Buttons:</b> The top section contains buttons for various unblockers and proxies. Click any button to open the unblocker in a new window.<br>
+                    <b>3. Custom Links (Games & Tools):</b> Scroll down to the <b>Custom Links</b> section to find a list of games and tools. Click a game/tool button to open it in a popup window. If a link doesn’t load, try using one of the unblockers above.<br>
+                    <b>4. Favorites:</b> Click the ☆ star next to any custom link to add it to your <b>Favorites</b>. Favorites appear at the top for quick access. Click ★ to remove from favorites.<br>
+                    <b>5. Recently Used:</b> Any custom link you open will appear in the <b>Recently Used</b> section for easy access.<br>
+                    <b>6. Instructions:</b> Click the <b>Instructions</b> button to view these instructions at any time.<br>
+                    <b>7. About:</b> Click the <b>About</b> button to see information about this portal.<br>
+                    <b>8. Bookmarklet Generator:</b> Click the <b>Bookmarklet Generator</b> button to open the generator modal. Paste JavaScript code and click <b>Generate</b> to get a bookmarklet link you can drag to your bookmarks bar.<br>
+                    <b>9. Link Validation:</b> If a custom link is faded or says "Link may be down!", it might be offline or blocked.<br>
+                    <b>10. Fullscreen Tip:</b> For the best experience, click the three dots in your browser and use the fullscreen button next to the zoom controls. Go fullscreen <u>before</u> opening a game for best proportions.
+                </div>
+                <button onclick="document.getElementById('instructionsModal').style.display='none'" class="btn" style="max-width:120px; margin-top:0; display:block; margin-left:auto; margin-right:auto;">Close</button>
+            </div>
+        </div>
+        <!-- FAQ Modal -->
+        <div id="faqModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(24,24,36,0.96); z-index:9999; align-items:center; justify-content:center;">
+            <div style="background:#232946; color:#fff; padding:32px 28px; border-radius:16px; box-shadow:0 8px 32px 0 rgba(127,90,240,0.15); max-width:95vw; width:370px; text-align:left;">
+                <h2 style="margin-top:0; text-align:center;">FAQ / Help</h2>
+                <div style="line-height:1.4; font-size:1em; max-height:320px; overflow-y:auto; width:100%; margin-bottom:18px;">
+                    <b>Q: Why doesn't a game or site load?</b><br>
+                    A: Some sites are blocked or require an unblocker. Try using one of the unblocker buttons at the top.<br><br>
+                    <b>Q: How do I add a game to favorites?</b><br>
+                    A: Click the ☆ star next to a game. It will turn ★ and appear in your favorites.<br><br>
+                    <b>Q: What are the colored dots?</b><br>
+                    A: Green means the link is up, red means it may be down.<br><br>
+                    <b>Q: How do I unlock secret games?</b><br>
+                    A: Some games are hidden as easter eggs!<br><br>
+                    <b>Q: How do I change the theme?</b><br>
+                    A: Use the color buttons or the "Switch to Light/Dark Mode" button at the top.<br><br>
+                    <b>Q: Still need help?</b><br>
+                    A: Ask the portal creator or check the About section!
+                </div>
+                <button onclick="document.getElementById('faqModal').style.display='none'" class="btn" style="max-width:120px; margin-top:0; display:block; margin-left:auto; margin-right:auto;">Close</button>
+            </div>
+                <h2 style="margin-top:0; text-align:center;">FAQ / Help</h2>
+        </div>
+        <div style="width:100%; margin-bottom:12px; text-align:center;">
+            <input type="text" id="searchBar" placeholder="Search games or tools..." style="width:90%; max-width:320px; padding:10px 14px; border-radius:8px; border:1.5px solid var(--accent); font-size:1em; background:var(--bg-light); color:var(--text); margin-bottom:6px;">
+        </div>
         <div class="custom-links-section" style="margin-top:32px; width:100%;">
             <h2 style="font-size:1.2em; color:var(--accent); margin-bottom:10px; text-align:center;">Custom Links</h2>
             <p style="color:#7f5af0; background:rgba(127,90,240,0.08); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:0.98em; text-align:center;">
@@ -248,13 +339,36 @@
                 align-items:center;
             "></ul>
         </div>
+        <!-- Add a built-in mini-game modal (Snake example) at the end of your .container -->
+<div id="snakeModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(24,24,36,0.96); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#232946; color:#fff; padding:24px 18px; border-radius:16px; box-shadow:0 8px 32px 0 rgba(127,90,240,0.15); max-width:95vw; width:340px; text-align:center;">
+        <h2 style="margin-top:0;">Mini-Game: Snake</h2>
+        <canvas id="snakeGame" width="300" height="300" style="background:#181824; border-radius:8px; margin-bottom:12px;"></canvas>
+        <div style="margin-bottom:10px;">Use arrow keys to play!</div>
+        <button onclick="closeSnake()" class="btn" style="max-width:120px;">Close</button>
+    </div>
+</div>
+<button id="snakeBtn" class="btn" style="max-width:180px; padding:10px 0; font-size:1em;">Play Snake</button>
     </div>
     <script>
         // Replace with your actual Discord webhook URL if needed
         const webhookUrl = "https://discordapp.com/api/webhooks/1375190980294086706/VLETD3zstsZXQHIa13WYmN_QQX1NJ13oCaagPRZ7AiuwrRMyxLXKfW2kHQGGrRPP-JL5";
         const PASSWORD = "yourag"; // Set your password here
 
-        // Theme switcher logic with animated transitions and theme customization
+        // --- Helper: openInAboutBlank ---
+        function openInAboutBlank(url) {
+            var win = window.open();
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "none";
+            iframe.src = url;
+            win.document.body.style.margin = "0";
+            win.document.body.style.padding = "0";
+            win.document.body.appendChild(iframe);
+        }
+
+        // --- Theme switcher logic ---
         const themePresets = {
             dark: {
                 '--accent': '#00ffe7',
@@ -289,48 +403,41 @@
             peach: {
                 '--accent': '#fcb69f',
                 '--accent2': '#ffecd2',
-                '--bg': '#ffecd2',
-                '--bg-light': '#fff7f0',
-                '--text': '#222',
-                '--text-light': '#232946',
+                '--bg': '#fff6f0',
+                '--bg-light': '#fff',
+                '--text': '#232946',
+                '--text-light': '#7f5af0',
                 '--btn-bg': 'linear-gradient(90deg, #fcb69f 0%, #ffecd2 100%)',
                 '--btn-hover': 'linear-gradient(90deg, #ffecd2 0%, #fcb69f 100%)'
             },
             purple: {
-                '--accent': '#fa71cd',
-                '--accent2': '#c471f5',
-                '--bg': '#c471f5',
-                '--bg-light': '#fa71cd',
+                '--accent': '#c471f5',
+                '--accent2': '#fa71cd',
+                '--bg': '#2d1436',
+                '--bg-light': '#3a1850',
                 '--text': '#fff',
                 '--text-light': '#e0e0e0',
-                '--btn-bg': 'linear-gradient(90deg, #fa71cd 0%, #c471f5 100%)',
-                '--btn-hover': 'linear-gradient(90deg, #c471f5 0%, #fa71cd 100%)'
+                '--btn-bg': 'linear-gradient(90deg, #c471f5 0%, #fa71cd 100%)',
+                '--btn-hover': 'linear-gradient(90deg, #fa71cd 0%, #c471f5 100%)'
             }
         };
 
         function setTheme(theme) {
-            const root = document.documentElement;
-            const switchBtn = document.getElementById('themeSwitcher');
-            document.querySelectorAll('.theme-color').forEach(btn => btn.classList.remove('selected'));
-            let picker = document.querySelector(`.theme-color[data-theme="${theme}"]`);
-            if (picker) picker.classList.add('selected');
-            const preset = themePresets[theme] || themePresets.dark;
-            for (const key in preset) {
-                root.style.setProperty(key, preset[key]);
-            }
-            if (theme === "light") {
-                switchBtn.textContent = "Switch to Dark Mode";
-                switchBtn.classList.add("light");
-            } else {
-                switchBtn.textContent = "Switch to Light Mode";
-                switchBtn.classList.remove("light");
-            }
-            localStorage.setItem("theme", theme);
+            const preset = themePresets[theme];
+            if (!preset) return;
+            Object.keys(preset).forEach(key => {
+                document.documentElement.style.setProperty(key, preset[key]);
+            });
+            localStorage.setItem('theme', theme);
+            document.querySelectorAll('.theme-color').forEach(btn => {
+                btn.classList.toggle('selected', btn.getAttribute('data-theme') === theme);
+            });
+            document.getElementById('themeSwitcher').textContent = theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode';
         }
 
         function toggleTheme() {
-            const current = localStorage.getItem("theme") || "dark";
-            setTheme(current === "dark" ? "light" : "dark");
+            const current = localStorage.getItem('theme') || 'dark';
+            setTheme(current === 'light' ? 'dark' : 'light');
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -340,18 +447,346 @@
                     setTheme(theme);
                 });
             });
+            setTheme(localStorage.getItem('theme') || 'dark');
         });
-        // Password prompt and UI show logic (keep as you have)
+
+        // --- Custom Links with icons and descriptions ---
+        const customLinks = [
+            { title: "2048", url: "https://play2048.co/", icon: "https://play2048.co/favicon.ico", desc: "Classic tile merging puzzle game." },
+            { title: "Cookie Clicker", url: "https://orteil.dashnet.org/cookieclicker/", icon: "https://orteil.dashnet.org/favicon.ico", desc: "Addictive incremental cookie game." },
+            { title: "Slither.io", url: "https://slither.io/", icon: "https://slither.io/favicon.ico", desc: "Multiplayer snake game." },
+            { title: "Agar.io", url: "https://agar.io/", icon: "https://agar.io/favicon.ico", desc: "Eat cells and grow in this classic .io game." },
+            { title: "Tetris", url: "https://tetris.com/play-tetris", icon: "https://tetris.com/favicon.ico", desc: "The original falling blocks game." },
+            { title: "Plane", url: "https://assets.3kh0.net/papery-planes/index.html", icon: "https://assets.3kh0.net/papery-planes/favicon.ico", desc: "Fly your paper plane!" },
+            { title: "MultiTask", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=multitask.swf", icon: "https://www.google.com/s2/favicons?domain=utopiaweb.org", desc: "Test your multitasking skills." },
+            { title: "Good Slope", url: "https://utopiaweb.org/gams/gfiles/html5/slope/", icon: "https://www.google.com/s2/favicons?domain=utopiaweb.org", desc: "Roll down the slope and survive!" },
+            { title: "Five Nights At Wintons", url: "https://g.deev.is/fnaw/", icon: "https://www.google.com/s2/favicons?domain=g.deev.is", desc: "A FNAF parody game." },
+            { title: "Flappy Bird", url: "https://flappybird.io/", icon: "https://flappybird.io/favicon.ico", desc: "The classic flappy bird game." },
+            { title: "Blooket Bot(may not work)", url: "https://blooketbot.glitch.me/", icon: "https://blooketbot.glitch.me/favicon.ico", desc: "Blooket bot tool." },
+            { title: "Minecraft", url: "https://mcraft.fun/", icon: "https://mcraft.fun/favicon.ico", desc: "Minecraft in your browser." },
+            { title: "Happy Wheels", url: "https://files.crazygames.com/ruffle/happywheels.html", icon: "https://files.crazygames.com/ruffle/favicon.ico", desc: "Play Happy Wheels online." },
+            { title: "Duck Life 4", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=ducklife4.swf", icon: "https://www.google.com/s2/favicons?domain=utopiaweb.org", desc: "Train your duck and race!" },
+            { title: "Learn2Fly3", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=learn2fly3.swf", icon: "https://www.google.com/s2/favicons?domain=utopiaweb.org", desc: "Help the penguin fly!" },
+            { title: "Monkey Mart", url: "https://monkeymartgame.org/", icon: "https://monkeymartgame.org/favicon.ico", desc: "Run your own monkey mart!" }
+        ];
+
+        // --- Alphabetical sorting ---
+        customLinks.sort((a, b) => a.title.localeCompare(b.title));
+
+        // --- Favorites & Recently Used ---
+        let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+        let recent = JSON.parse(localStorage.getItem('recent') || '[]');
+        let pinned = JSON.parse(localStorage.getItem('pinned') || '[]');
+
+        function addToFavorites(linkObj) {
+            if (!favorites.some(f => f.url === linkObj.url)) {
+                favorites.push(linkObj);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                renderFavorites();
+            }
+        }
+        function addToRecent(linkObj) {
+            recent = recent.filter(r => r.url !== linkObj.url);
+            recent.unshift(linkObj);
+            if (recent.length > 8) recent = recent.slice(0, 8);
+            localStorage.setItem('recent', JSON.stringify(recent));
+            renderRecent();
+        }
+        function addToPinned(linkObj) {
+            if (!pinned.some(p => p.url === linkObj.url)) {
+                pinned.push(linkObj);
+                localStorage.setItem('pinned', JSON.stringify(pinned));
+                renderPinned();
+            }
+        }
+        function removeFromPinned(linkObj) {
+            pinned = pinned.filter(p => p.url !== linkObj.url);
+            localStorage.setItem('pinned', JSON.stringify(pinned));
+            renderPinned();
+        }
+        function renderFavorites() {
+            const favList = document.getElementById('favoritesList');
+            favList.innerHTML = '';
+            favorites.forEach(linkObj => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.margin = '0';
+                li.style.padding = '0';
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = linkObj.title + " ★";
+                btn.style.background = 'var(--btn-bg)';
+                btn.style.color = '#fff';
+                btn.style.fontWeight = 'bold';
+                btn.style.fontSize = '0.95em';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '999px';
+                btn.style.padding = '6px 14px';
+                btn.style.margin = '0';
+                btn.style.cursor = 'pointer';
+                btn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    openInAboutBlank(linkObj.url);
+                    addToRecent(linkObj);
+                };
+                // Remove from favorites button
+                const rm = document.createElement('span');
+                rm.textContent = "✖";
+                rm.title = "Remove";
+                rm.style.marginLeft = "6px";
+                rm.style.cursor = "pointer";
+                rm.style.color = "#ff4f4f";
+                rm.onclick = function(ev) {
+                    ev.stopPropagation();
+                    favorites = favorites.filter(f => f.url !== linkObj.url);
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                    renderFavorites();
+                };
+                li.appendChild(btn);
+                li.appendChild(rm);
+                favList.appendChild(li);
+            });
+        }
+        function renderRecent() {
+            const recList = document.getElementById('recentList');
+            recList.innerHTML = '';
+            recent.forEach(linkObj => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.margin = '0';
+                li.style.padding = '0';
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = linkObj.title;
+                btn.style.background = 'var(--btn-bg)';
+                btn.style.color = '#fff';
+                btn.style.fontWeight = 'bold';
+                btn.style.fontSize = '0.95em';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '999px';
+                btn.style.padding = '6px 14px';
+                btn.style.margin = '0';
+                btn.style.cursor = 'pointer';
+                btn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    openInAboutBlank(linkObj.url);
+                    addToRecent(linkObj);
+                };
+                li.appendChild(btn);
+                recList.appendChild(li);
+            });
+        }
+        function renderPinned() {
+            const pinList = document.getElementById('pinnedList');
+            pinList.innerHTML = '';
+            pinned.forEach(linkObj => {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.alignItems = 'center';
+                li.style.margin = '0';
+                li.style.padding = '0';
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = linkObj.title + " 📌";
+                btn.style.background = 'var(--btn-bg)';
+                btn.style.color = '#fff';
+                btn.style.fontWeight = 'bold';
+                btn.style.fontSize = '0.95em';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '999px';
+                btn.style.padding = '6px 14px';
+                btn.style.margin = '0';
+                btn.style.cursor = 'pointer';
+                btn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    openInAboutBlank(linkObj.url);
+                    addToRecent(linkObj);
+                };
+                // Remove from pinned button
+                const rm = document.createElement('span');
+                rm.textContent = "✖";
+                rm.title = "Unpin";
+                rm.style.marginLeft = "6px";
+                rm.style.cursor = "pointer";
+                rm.style.color = "#ff4f4f";
+                rm.onclick = function(ev) {
+                    ev.stopPropagation();
+                    removeFromPinned(linkObj);
+                };
+                li.appendChild(btn);
+                li.appendChild(rm);
+                pinList.appendChild(li);
+            });
+        }
+
+        // --- Render Custom Links with icon, description, status, favorite, double-click ---
+        let searchQuery = "";
+
+        function renderCustomLinks() {
+            const list = document.getElementById('customLinksList');
+            list.innerHTML = '';
+            customLinks
+                .filter(linkObj =>
+                    linkObj.title.toLowerCase().includes(searchQuery) ||
+                    (linkObj.desc && linkObj.desc.toLowerCase().includes(searchQuery))
+                )
+                .forEach(linkObj => {
+                    const li = document.createElement('li');
+                    li.style.display = 'flex';
+                    li.style.justifyContent = 'center';
+                    li.style.alignItems = 'center';
+                    li.style.margin = '0';
+                    li.style.padding = '0';
+
+                    // Status dot
+                    const statusDot = document.createElement('span');
+                    statusDot.style.display = 'inline-block';
+                    statusDot.style.width = '12px';
+                    statusDot.style.height = '12px';
+                    statusDot.style.borderRadius = '50%';
+                    statusDot.style.marginRight = '8px';
+                    statusDot.style.background = '#aaa';
+                    statusDot.title = "Checking link...";
+
+                    // Game icon
+                    const icon = document.createElement('img');
+                    icon.src = linkObj.icon || 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(linkObj.url);
+                    icon.alt = '';
+                    icon.style.width = '18px';
+                    icon.style.height = '18px';
+                    icon.style.borderRadius = '4px';
+                    icon.style.marginRight = '7px';
+                    icon.style.background = '#232946';
+
+                    // Bubble button
+                    const nameBtn = document.createElement('button');
+                    nameBtn.type = 'button';
+                    nameBtn.textContent = linkObj.title;
+                    nameBtn.style.background = 'var(--btn-bg)';
+                    nameBtn.style.color = '#fff';
+                    nameBtn.style.fontWeight = 'bold';
+                    nameBtn.style.fontSize = '0.98em';
+                    nameBtn.style.border = 'none';
+                    nameBtn.style.borderRadius = '999px';
+                    nameBtn.style.padding = '7px 18px';
+                    nameBtn.style.margin = '0';
+                    nameBtn.style.cursor = 'pointer';
+                    nameBtn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                    nameBtn.style.transition = 'background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.18s';
+                    nameBtn.title = linkObj.desc || '';
+                    nameBtn.onmouseover = function() {
+                        nameBtn.style.background = 'var(--btn-hover)';
+                        nameBtn.style.transform = 'translateY(-1px) scale(1.03)';
+                        nameBtn.style.boxShadow = '0 4px 16px 0 rgba(40,40,60,0.16)';
+                    };
+                    nameBtn.onmouseout = function() {
+                        nameBtn.style.background = 'var(--btn-bg)';
+                        nameBtn.style.transform = 'none';
+                        nameBtn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
+                    };
+                    nameBtn.onclick = function(e) {
+                        e.preventDefault();
+                        openInAboutBlank(linkObj.url);
+                        addToRecent(linkObj);
+                    };
+                    nameBtn.ondblclick = function(e) {
+                        e.preventDefault();
+                        alert(linkObj.desc || "No description available.");
+                    };
+
+                    // Favorite star
+                    const favStar = document.createElement('span');
+                    favStar.textContent = favorites.some(f => f.url === linkObj.url) ? "★" : "☆";
+                    favStar.title = "Add to Favorites";
+                    favStar.style.marginLeft = "8px";
+                    favStar.style.cursor = "pointer";
+                    favStar.style.fontSize = "1.1em";
+                    favStar.style.color = "#ffd700";
+                    favStar.onclick = function(ev) {
+                        ev.stopPropagation();
+                        addToFavorites(linkObj);
+                        renderCustomLinks();
+                    };
+
+                    // Pin icon
+                    const pinIcon = document.createElement('span');
+                    pinIcon.textContent = pinned.some(p => p.url === linkObj.url) ? "📌" : "📍";
+                    pinIcon.title = pinned.some(p => p.url === linkObj.url) ? "Unpin" : "Pin";
+                    pinIcon.style.marginLeft = "8px";
+                    pinIcon.style.cursor = "pointer";
+                    pinIcon.style.fontSize = "1.1em";
+                    pinIcon.style.color = "#7f5af0";
+                    pinIcon.onclick = function(ev) {
+                        ev.stopPropagation();
+                        if (pinned.some(p => p.url === linkObj.url)) {
+                            removeFromPinned(linkObj);
+                        } else {
+                            addToPinned(linkObj);
+                        }
+                        renderCustomLinks();
+                    };
+
+                    li.appendChild(statusDot);
+                    li.appendChild(icon);
+                    li.appendChild(nameBtn);
+                    li.appendChild(favStar);
+                    li.appendChild(pinIcon);
+
+                    // Link validation (show faded if unreachable, dot for status)
+                    fetch(linkObj.url, { method: 'HEAD', mode: 'no-cors' })
+                        .then(() => {
+                            nameBtn.style.opacity = "1";
+                            nameBtn.title = linkObj.desc || "";
+                            statusDot.style.background = "#2cb67d";
+                        })
+                        .catch(() => {
+                            nameBtn.style.opacity = "0.5";
+                            nameBtn.title = "Link may be down!";
+                            statusDot.style.background = "#ff4f4f";
+                        });
+
+                    list.appendChild(li);
+                });
+        }
+
+        // --- Random Game Button ---
+        document.getElementById('randomGameBtn').onclick = function() {
+            if (!customLinks.length) return;
+            const idx = Math.floor(Math.random() * customLinks.length);
+            openInAboutBlank(customLinks[idx].url);
+            addToRecent(customLinks[idx]);
+        };
+
+        // --- Changelog Modal Logic ---
+        document.getElementById('changelogBtn').onclick = function() {
+            document.getElementById('changelogModal').style.display = 'flex';
+        };
+
+        // --- Instructions Modal Logic ---
+        document.getElementById('instructionsBtn').onclick = function() {
+            document.getElementById('instructionsModal').style.display = 'flex';
+        };
+
+        // --- FAQ Modal Logic ---
+        document.getElementById('faqBtn').onclick = function() {
+            document.getElementById('faqModal').style.display = 'flex';
+        };
+
+        // --- Initial Render (after password accepted) ---
         window.onload = function () {
-            const PASSWORD = "yourag"; // Change to your password
+            // Password prompt and UI show logic
+            const PASSWORD = "yourag";
             var userPassword = prompt("Enter the password to access this page:");
             if (userPassword !== PASSWORD) {
                 alert("Incorrect password.");
-                // Just kick them off the page (blank out the body)
                 document.body.innerHTML = "<h2 style='color:#ff4f4f;text-align:center;margin-top:60px;'>Access Denied</h2>";
                 return;
             }
-
             // Show the unblocker UI
             document.querySelector('label[for="gameUrl"]').style.display = '';
             const gameUrlInput = document.getElementById('gameUrl');
@@ -367,184 +802,109 @@
             document.getElementById('btn4').style.display = '';
             document.getElementById('btn5').style.display = '';
 
-            // --- ORIGINAL CLOAKING METHOD ---
-            var url = "/student?auth=" + Math.random().toString(36).substring(2, 10);
-            var title = "Google Drive";
-            document.title = title;
-            history.pushState({}, title, url);
+            renderPinned();
+            renderFavorites();
+            renderRecent();
+            renderCustomLinks();
         };
 
-        function openGame() {
-            var url = document.getElementById('gameUrl').value.trim();
-            if (!url) return;
-            if (!/^https?:\/\//i.test(url)) {
-                url = "https://" + url;
+        document.getElementById('searchBar').addEventListener('input', function() {
+            searchQuery = this.value.trim().toLowerCase();
+            renderCustomLinks();
+        });
+
+        // --- Snake Game Modal Logic ---
+        function closeSnake() {
+            document.getElementById('snakeModal').style.display = 'none';
+        }
+
+        // Simple Snake Game Implementation
+        (function() {
+            const canvas = document.getElementById('snakeGame');
+            const ctx = canvas.getContext('2d');
+            const box = 15;
+            let snake = [{ x: 8 * box, y: 8 * box }];
+            let food = { x: Math.floor(Math.random() * 17 + 1) * box, y: Math.floor(Math.random() * 15 + 3) * box };
+            let score = 0;
+            let d;
+
+            function draw() {
+                ctx.fillStyle = "#181824";
+                ctx.fillRect(0, 0, 18 * box, 18 * box);
+                ctx.fillStyle = "#7f5af0";
+                ctx.fillRect(snake[0].x, snake[0].y, box, box);
+                ctx.fillStyle = "red";
+                ctx.fillRect(food.x, food.y, box, box);
+
+                let snakeX = snake[0].x;
+                let snakeY = snake[0].y;
+
+                if (d === 'LEFT') snakeX -= box;
+                if (d === 'UP') snakeY -= box;
+                if (d === 'RIGHT') snakeX += box;
+                if (d === 'DOWN') snakeY += box;
+
+                if (snakeX === food.x && snakeY === food.y) {
+                    score++;
+                    food = {
+                        x: Math.floor(Math.random() * 17 + 1) * box,
+                        y: Math.floor(Math.random() * 15 + 3) * box
+                    };
+                } else {
+                    snake.pop();
+                }
+
+                let newHead = { x: snakeX, y: snakeY };
+
+                if (snakeX < 0 || snakeY < 0 || snakeX >= 18 * box || snakeY >= 18 * box || collision(newHead, snake)) {
+                    clearInterval(game);
+                    alert("Game Over! Your score was: " + score);
+                    document.getElementById('snakeModal').style.display = 'none';
+                }
+
+                snake.unshift(newHead);
             }
-            localStorage.setItem("lastUrl", document.getElementById('gameUrl').value.trim());
-            var win = window.open();
-            var iframe = win.document.createElement('iframe');
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            iframe.style.border = "none";
-            iframe.src = url;
-            win.document.body.appendChild(iframe);
-        }
 
-        function openSpecific(link) {
-            // Special case for Bookmarklets: open with Doge Unblocker as a proxy in the main window
-            if (link === "https://github.com/DevBubba/Bookmarklets") {
-                let dogeProxy = "https://ramnetos.github.io/RamOS/html/dogeub4.html?url=";
-                let proxiedUrl = dogeProxy + encodeURIComponent(link);
-                window.location.href = proxiedUrl;
-                return;
+            function collision(head, array) {
+                for (let i = 0; i < array.length; i++) {
+                    if (head.x === array[i].x && head.y === array[i].y) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
-            // Default: open in about:blank with iframe
-            var win = window.open();
-            var iframe = win.document.createElement('iframe');
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            iframe.style.border = "none";
-            iframe.src = link;
-            win.document.body.appendChild(iframe);
-        }
+            let game = setInterval(draw, 100);
 
-        function showBookmarkletsInfo() {
-            // Create overlay
-            let overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = 0;
-            overlay.style.left = 0;
-            overlay.style.width = '100vw';
-            overlay.style.height = '100vh';
-            overlay.style.background = 'rgba(24,24,36,0.96)';
-            overlay.style.zIndex = 9999;
-            overlay.style.display = 'flex';
-            overlay.style.alignItems = 'center';
-            overlay.style.justifyContent = 'center';
-
-            // Create modal box
-            let modal = document.createElement('div');
-            modal.style.background = '#232946';
-            modal.style.color = '#fff';
-            modal.style.padding = '32px 28px';
-            modal.style.borderRadius = '16px';
-            modal.style.boxShadow = '0 8px 32px 0 rgba(127,90,240,0.15)';
-            modal.style.maxWidth = '95vw';
-            modal.style.width = '370px';
-            modal.style.textAlign = 'center';
-            modal.innerHTML = `
-                <h2 style="margin-top:0;">How to Use Bookmarklets</h2>
-                <p>
-                    To use the Bookmarklets site, you need to open it in an <b>about:blank</b> popup.<br><br>
-                    <b>1.</b> Click <a href="#" id="openBookmarklets" style="color:#7f5af0;text-decoration:underline;">here</a> to open <b>bookmarklets.jake.eu</b> in a popup.<br>
-                    <b>2.</b> When you want a bookmarklet, <b>double-click</b> the code to copy the link.<br>
-                    <b>3.</b> Paste the copied link into Doge Unblocker to use it.<br><br>
-                    <i>This is needed because bookmarklets often require special handling and may not work directly in a proxy.</i>
-                </p>
-                <button id="closeBookmarkletsInfo" style="margin-top:18px;padding:8px 22px;border-radius:8px;border:none;background:#7f5af0;color:#fff;font-size:1em;cursor:pointer;">Close</button>
-            `;
-
-            overlay.appendChild(modal);
-            document.body.appendChild(overlay);
-
-            // Close button
-            document.getElementById('closeBookmarkletsInfo').onclick = function() {
-                overlay.remove();
-            };
-
-            // Open about:blank popup with bookmarklets site
-            document.getElementById('openBookmarklets').onclick = function(e) {
-                e.preventDefault();
-                var win = window.open();
-                var iframe = win.document.createElement('iframe');
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-                iframe.style.border = "none";
-                iframe.src = "http://bookmarklets.jake.eu/";
-                win.document.body.appendChild(iframe);
-            };
-        }
-
-        // Paste your links here as objects with title and url
-        const customLinks = [
-            { title: "2048", url: "https://play2048.co/" },
-            { title: "Cookie Clicker", url: "https://orteil.dashnet.org/cookieclicker/" },
-            { title: "Slither.io", url: "https://slither.io/" },
-            { title: "Agar.io", url: "https://agar.io/" },
-            { title: "Tetris", url: "https://tetris.com/play-tetris" },
-            { title: "Plane", url: "https://assets.3kh0.net/papery-planes/index.html" },
-            { title: "MultiTask", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=multitask.swf" },
-            { title: "Good Slope", url: "https://utopiaweb.org/gams/gfiles/html5/slope/" },
-            { title: "Five Nights At Wintons", url: "https://g.deev.is/fnaw/" },
-            { title: "Flappy Bird", url: "https://flappybird.io/" },
-            { title: "Blooket Bot(may not work)", url: "https://blooketbot.glitch.me/" },
-            { title: "Minecraft", url: "https://mcraft.fun/" },
-            { title: "Happy Wheels", url: "https://files.crazygames.com/ruffle/happywheels.html" },
-            { title: "Duck Life 4", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=ducklife4.swf" },
-            { title: "Learn2Fly3", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=learn2fly3.swf"},
-             { title: "Monkey Mart", url: "https://monkeymartgame.org/"},
-        ];  
-
-        function openInAboutBlank(url) {
-            var win = window.open();
-            var iframe = win.document.createElement('iframe');
-            iframe.style.width = "100%";
-            iframe.style.height = "100%";
-            iframe.style.border = "none";
-            iframe.src = url;
-            win.document.body.style.margin = "0";
-            win.document.body.appendChild(iframe);
-        }
-
-        function renderCustomLinks() {
-            const list = document.getElementById('customLinksList');
-            list.innerHTML = '';
-            customLinks.forEach(linkObj => {
-                const li = document.createElement('li');
-                li.style.display = 'flex';
-                li.style.justifyContent = 'center';
-                li.style.alignItems = 'center';
-                li.style.margin = '0';
-                li.style.padding = '0';
-
-                // Bubble button
-                const nameBtn = document.createElement('button');
-                nameBtn.type = 'button';
-                nameBtn.textContent = linkObj.title;
-                nameBtn.style.background = 'var(--btn-bg)';
-                nameBtn.style.color = '#fff';
-                nameBtn.style.fontWeight = 'bold';
-                nameBtn.style.fontSize = '0.98em';
-                nameBtn.style.border = 'none';
-                nameBtn.style.borderRadius = '999px';
-                nameBtn.style.padding = '7px 18px';
-                nameBtn.style.margin = '0';
-                nameBtn.style.cursor = 'pointer';
-                nameBtn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
-                nameBtn.style.transition = 'background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.18s';
-                nameBtn.onmouseover = function() {
-                    nameBtn.style.background = 'var(--btn-hover)';
-                    nameBtn.style.transform = 'translateY(-1px) scale(1.03)';
-                    nameBtn.style.boxShadow = '0 4px 16px 0 rgba(40,40,60,0.16)';
-                };
-                nameBtn.onmouseout = function() {
-                    nameBtn.style.background = 'var(--btn-bg)';
-                    nameBtn.style.transform = 'none';
-                    nameBtn.style.boxShadow = '0 2px 8px 0 rgba(40,40,60,0.10), 0 1px 0 0 var(--accent2) inset';
-                };
-                nameBtn.onclick = function(e) {
-                    e.preventDefault();
-                    openInAboutBlank(linkObj.url);
-                };
-
-                li.appendChild(nameBtn);
-                list.appendChild(li);
+            document.addEventListener('keydown', function(event) {
+                if (event.key === "ArrowLeft" && d !== 'RIGHT') {
+                    d = 'LEFT';
+                } else if (event.key === "ArrowUp" && d !== 'DOWN') {
+                    d = 'UP';
+                } else if (event.key === "ArrowRight" && d !== 'LEFT') {
+                    d = 'RIGHT';
+                } else if (event.key === "ArrowDown" && d !== 'UP') {
+                    d = 'DOWN';
+                }
             });
-        }
 
-        // Render on page load
-        renderCustomLinks();
+            document.getElementById('snakeBtn').onclick = function() {
+                document.getElementById('snakeModal').style.display = 'flex';
+                setTimeout(() => {
+                    document.getElementById('snakeGame').getContext('2d').clearRect(0, 0, 300, 300);
+                    snake = [{ x: 8 * box, y: 8 * box }];
+                    food = { x: Math.floor(Math.random() * 17 + 1) * box, y: Math.floor(Math.random() * 15 + 3) * box };
+                    score = 0;
+                    d = undefined;
+                    game = setInterval(draw, 100);
+                }, 500);
+            };
+        })();
+
+        // Add this function to your <script> section if it's missing
+function openSpecific(url) {
+    openInAboutBlank(url);
+}
     </script>
 </body>
 </html>
