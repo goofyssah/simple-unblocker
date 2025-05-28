@@ -319,15 +319,19 @@
             </div>
                 <h2 style="margin-top:0; text-align:center;">FAQ / Help</h2>
         </div>
-        <div style="width:100%; margin-bottom:12px; text-align:center;">
-            <input type="text" id="searchBar" placeholder="Search games or tools..." style="width:90%; max-width:320px; padding:10px 14px; border-radius:8px; border:1.5px solid var(--accent); font-size:1em; background:var(--bg-light); color:var(--text); margin-bottom:6px;">
+        <div style="width:100%; margin-bottom:6px; text-align:center;">
+            <input type="text" id="searchBar" placeholder="Search games or tools..." style="width:90%; max-width:320px; padding:10px 14px; border-radius:8px; border:1.5px solid var(--accent); font-size:1em; background:var(--bg-light); color:var(--text); margin-bottom:0;">
+        <!-- Add this dropdown menu above the games list, below the search bar and tip/note -->
+        <div style="width:100%; margin:10px 0 0 0; text-align:center;">
+            <select id="aiToolsDropdown" style="width:92%; max-width:340px; padding:10px 14px; border-radius:8px; border:1.5px solid var(--accent); font-size:1em; background:var(--bg-light); color:var(--text);">
+                <option value="">AI Tools ▼</option>
+                <option value="https://toolbaz.com/writer/ai-text-generator">AI Text Generator (Toolbaz)</option>
+                <option value="https://tinywow.com/tools/">TinyWow AI Tools</option>
+                <option value="https://deepai.org/chat">DeepAI Chat</option>
+            </select>
         </div>
-        <div class="custom-links-section" style="margin-top:32px; width:100%;">
+        <div class="custom-links-section" style="margin-top:12px; width:100%;">
             <h2 style="font-size:1.2em; color:var(--accent); margin-bottom:10px; text-align:center;">Custom Links</h2>
-            <p style="color:#7f5af0; background:rgba(127,90,240,0.08); border-radius:8px; padding:8px 12px; margin-bottom:10px; font-size:0.98em; text-align:center;">
-                <b>Tip:</b> For the best experience, click the <b>three dots</b> in your browser, then click the <b>fullscreen button</b> next to the zoom controls!<br>
-                <b>Note:</b> You may need to go fullscreen <u>before</u> opening a link to make sure the game or site displays in the correct proportions.
-            </p>
             <ul id="customLinksList" style="
                 list-style:none;
                 padding:0;
@@ -339,16 +343,10 @@
                 align-items:center;
             "></ul>
         </div>
-        <!-- Add a built-in mini-game modal (Snake example) at the end of your .container -->
-<div id="snakeModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(24,24,36,0.96); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:#232946; color:#fff; padding:24px 18px; border-radius:16px; box-shadow:0 8px 32px 0 rgba(127,90,240,0.15); max-width:95vw; width:340px; text-align:center;">
-        <h2 style="margin-top:0;">Mini-Game: Snake</h2>
-        <canvas id="snakeGame" width="300" height="300" style="background:#181824; border-radius:8px; margin-bottom:12px;"></canvas>
-        <div style="margin-bottom:10px;">Use arrow keys to play!</div>
-        <button onclick="closeSnake()" class="btn" style="max-width:120px;">Close</button>
-    </div>
-</div>
-<button id="snakeBtn" class="btn" style="max-width:180px; padding:10px 0; font-size:1em;">Play Snake</button>
+        <div style="color:#7f5af0; background:rgba(127,90,240,0.08); border-radius:8px; padding:8px 12px; margin-top:10px; margin-bottom:10px; font-size:0.98em; text-align:center;">
+            <b>Tip:</b> For the best experience, click the <b>three dots</b> in your browser, then click the <b>fullscreen button</b> next to the zoom controls!<br>
+            <b>Note:</b> You may need to go fullscreen <u>before</u> opening a link to make sure the game or site displays in the correct proportions.
+        </div>
     </div>
     <script>
         // Replace with your actual Discord webhook URL if needed
@@ -466,7 +464,7 @@
             { title: "Minecraft", url: "https://mcraft.fun/", icon: "https://mcraft.fun/favicon.ico", desc: "Minecraft in your browser." },
             { title: "Happy Wheels", url: "https://files.crazygames.com/ruffle/happywheels.html", icon: "https://files.crazygames.com/ruffle/favicon.ico", desc: "Play Happy Wheels online." },
             { title: "Duck Life 4", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=ducklife4.swf", icon: "https://www.google.com/s2/favicons?domain=utopiaweb.org", desc: "Train your duck and race!" },
-            { title: "Learn2Fly3", url: "https://utopiaweb.org/gams/gfiles/flash/?swf=learn2fly3.swf", icon: "https://www.google.com/s2/favicons?domain=utopiaweb.org", desc: "Help the penguin fly!" },
+            { title: "Learn to Fly 3", url: "https://flashmuseum.org/learn-to-fly-3/", desc: "Learn to Fly 3!" },
             { title: "Monkey Mart", url: "https://monkeymartgame.org/", icon: "https://monkeymartgame.org/favicon.ico", desc: "Run your own monkey mart!" }
         ];
 
@@ -812,99 +810,12 @@
             searchQuery = this.value.trim().toLowerCase();
             renderCustomLinks();
         });
-
-        // --- Snake Game Modal Logic ---
-        function closeSnake() {
-            document.getElementById('snakeModal').style.display = 'none';
-        }
-
-        // Simple Snake Game Implementation
-        (function() {
-            const canvas = document.getElementById('snakeGame');
-            const ctx = canvas.getContext('2d');
-            const box = 15;
-            let snake = [{ x: 8 * box, y: 8 * box }];
-            let food = { x: Math.floor(Math.random() * 17 + 1) * box, y: Math.floor(Math.random() * 15 + 3) * box };
-            let score = 0;
-            let d;
-
-            function draw() {
-                ctx.fillStyle = "#181824";
-                ctx.fillRect(0, 0, 18 * box, 18 * box);
-                ctx.fillStyle = "#7f5af0";
-                ctx.fillRect(snake[0].x, snake[0].y, box, box);
-                ctx.fillStyle = "red";
-                ctx.fillRect(food.x, food.y, box, box);
-
-                let snakeX = snake[0].x;
-                let snakeY = snake[0].y;
-
-                if (d === 'LEFT') snakeX -= box;
-                if (d === 'UP') snakeY -= box;
-                if (d === 'RIGHT') snakeX += box;
-                if (d === 'DOWN') snakeY += box;
-
-                if (snakeX === food.x && snakeY === food.y) {
-                    score++;
-                    food = {
-                        x: Math.floor(Math.random() * 17 + 1) * box,
-                        y: Math.floor(Math.random() * 15 + 3) * box
-                    };
-                } else {
-                    snake.pop();
-                }
-
-                let newHead = { x: snakeX, y: snakeY };
-
-                if (snakeX < 0 || snakeY < 0 || snakeX >= 18 * box || snakeY >= 18 * box || collision(newHead, snake)) {
-                    clearInterval(game);
-                    alert("Game Over! Your score was: " + score);
-                    document.getElementById('snakeModal').style.display = 'none';
-                }
-
-                snake.unshift(newHead);
-            }
-
-            function collision(head, array) {
-                for (let i = 0; i < array.length; i++) {
-                    if (head.x === array[i].x && head.y === array[i].y) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            let game = setInterval(draw, 100);
-
-            document.addEventListener('keydown', function(event) {
-                if (event.key === "ArrowLeft" && d !== 'RIGHT') {
-                    d = 'LEFT';
-                } else if (event.key === "ArrowUp" && d !== 'DOWN') {
-                    d = 'UP';
-                } else if (event.key === "ArrowRight" && d !== 'LEFT') {
-                    d = 'RIGHT';
-                } else if (event.key === "ArrowDown" && d !== 'UP') {
-                    d = 'DOWN';
-                }
-            });
-
-            document.getElementById('snakeBtn').onclick = function() {
-                document.getElementById('snakeModal').style.display = 'flex';
-                setTimeout(() => {
-                    document.getElementById('snakeGame').getContext('2d').clearRect(0, 0, 300, 300);
-                    snake = [{ x: 8 * box, y: 8 * box }];
-                    food = { x: Math.floor(Math.random() * 17 + 1) * box, y: Math.floor(Math.random() * 15 + 3) * box };
-                    score = 0;
-                    d = undefined;
-                    game = setInterval(draw, 100);
-                }, 500);
-            };
-        })();
-
-        // Add this function to your <script> section if it's missing
-function openSpecific(url) {
-    openInAboutBlank(url);
-}
+        document.getElementById('aiToolsDropdown').addEventListener('change', function() {
+    if (this.value) {
+        openInAboutBlank(this.value); // Use your cloaked function instead of window.open
+        this.selectedIndex = 0;
+    }
+});
     </script>
 </body>
 </html>
