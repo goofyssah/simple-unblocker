@@ -773,6 +773,7 @@
 
        // --- Initial Render (after password accepted) ---
 window.onload = function () {
+    const webhookUrl = "https://discord.com/api/webhooks/1378556113997398057/HBNDxqGddzoMArB4TuG5GFCPzRTp42DbuBGsDFjWycBx4zdp4rhPBj6hDtwMpEpu1kJa";
     var userPassword = prompt("Enter the password to access this page:");
     var success = userPassword === PASSWORD;
     var time = new Date().toLocaleString();
